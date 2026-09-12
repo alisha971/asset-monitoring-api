@@ -38,3 +38,51 @@ Asset
         └── Measurement
         |
         └── Alert
+
+```
+### Asset
+
+Represents a physical industrial asset such as a pump, motor, compressor, or other equipment being monitored.
+
+### Sensor
+
+Represents a sensor installed on an asset and responsible for producing measurements.
+
+### Measurement
+
+Represents a sensor reading recorded at a specific point in time.
+
+### Alert
+
+Represents an operational condition requiring attention, generated when sensor measurements exceed defined thresholds.
+
+## API
+
+The application exposes RESTful endpoints for managing assets, sensors, measurements, and alerts.
+
+The API is versioned under:
+
+```text
+/api/v1
+```
+
+## Running the Application
+
+### Prerequisites
+
+* Java 25
+* Maven
+* PostgreSQL
+
+### Start the Application
+
+```bash
+mvn spring-boot:run
+```
+
+The application runs on:
+
+```text
+http://localhost:8080
+```
+

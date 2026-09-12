@@ -23,4 +23,14 @@ class HealthController{
 	public String ping(){
 		return "asset-monitoring up";
 	}
+	@GetMapping("/ping/version")
+	public VersionResponse pingVersion(){
+		VersionResponse response = new VersionResponse("asset-monitoring", "0.0.1");
+		return response;
+	}
 }
+
+record VersionResponse(String name, String version){
+}
+
+	

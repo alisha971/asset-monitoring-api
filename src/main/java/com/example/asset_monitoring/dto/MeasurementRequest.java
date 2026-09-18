@@ -2,6 +2,7 @@ package com.example.asset_monitoring.dto;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import jakarta.validation.constraints.*;
 
 import com.example.asset_monitoring.domain.Sensor;
 

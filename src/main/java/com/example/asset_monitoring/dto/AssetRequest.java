@@ -1,4 +1,5 @@
 package com.example.asset_monitoring.dto;
+import jakarta.validation.constraints.*;
 
 public record AssetRequest(
     

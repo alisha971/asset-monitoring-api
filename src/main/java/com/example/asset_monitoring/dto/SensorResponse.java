@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.example.asset_monitoring.domain.Sensor;
 import com.example.asset_monitoring.domain.SensorType;
+import jakarta.validation.constraints.*;
 
 public record SensorResponse(
     Long id,

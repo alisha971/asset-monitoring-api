@@ -2,6 +2,7 @@ package com.example.asset_monitoring.dto;
 
 import com.example.asset_monitoring.domain.SensorType;
 import java.math.BigDecimal;
+import jakarta.validation.constraints.*;
 
 public record SensorRequest(
 

@@ -2,6 +2,9 @@ spring:
   application:
     name: asset-monitoring
 
+  jackson:
+    default-property-inclusion: non_null
+
   autoconfigure:
     exclude:
       - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration

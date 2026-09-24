@@ -24,11 +24,13 @@ public class MeasurementService{
     private final AssetRepository assetRepository;
     private final SensorRepository sensorRepository;
     private final MeasurementRepository measurementRepository;
+    private final AlertService alertService;
 
-    public MeasurementService(AssetRepository assetRepository, SensorRepository sensorRepository, MeasurementRepository measurementRepository){
+    public MeasurementService(AssetRepository assetRepository, SensorRepository sensorRepository, MeasurementRepository measurementRepository, AlertService alertService){
         this.assetRepository = assetRepository;
         this.sensorRepository = sensorRepository;
         this.measurementRepository = measurementRepository;
+        this.alertService = alertService;
     }
 
     // use case 1: record measurement
@@ -39,22 +41,23 @@ public class MeasurementService{
         if(!sensor.isActive()){
             throw new SensorNotActiveException(sensorId);
         }
+        // null recordedAt
+        Instant recordedAt = request.recordedAt() != null ? request.recordedAt() : Instant.now();
+
         // measurement in future?
-        if(request.recordedAt().isAfter(Instant.now())){
-            throw new IllegalRecordAtTimeException(request.recordedAt());
+        if(recordedAt.isAfter(Instant.now())){
+            throw new InvalidRecordAtTimeException(recordedAt);
         }
         
-        Measurement measurement = new Measurement(request.value(), sensor, request.unit(), request.recordedAt());
+        Measurement measurement = new Measurement(request.value(), sensor, request.unit(), recordedAt);
 
         Measurement saved = measurementRepository.save(measurement);
 
         AlertSeverity severity = sensor.severityOf(saved.getValue());
 
         if(!sensor.isWithinLimits(saved.getValue())){
-            // check if alert already exists - code - escalate
-
-            // if no alert exists
-            // Alert alert = new Alert(saved.getSensor(), severity);
+            // check if alert already exists - escalate or raise alert
+            alertService.raiseOrEscalate(sensor, severity);
         }
 
         return MeasurementResponse.from(saved, severity);

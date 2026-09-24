@@ -1,7 +1,7 @@
 package com.example.asset_monitoring.domain;
 
 public enum AlertState {
-    NORMAL, WARNING, CRITICAL, ACKNOWLEDGEMENT, RESOLVED;
+    NORMAL, WARNING, CRITICAL, ACKNOWLEDGED, RESOLVED;
 
     public boolean isValidTransition(AlertState next){
         switch(this){
@@ -9,13 +9,13 @@ public enum AlertState {
                 return (next == WARNING || next == CRITICAL);
 
             case WARNING:
-                return (next == CRITICAL || next == ACKNOWLEDGEMENT || next == NORMAL);
+                return (next == CRITICAL || next == ACKNOWLEDGED || next == NORMAL);
 
             case CRITICAL:
-                return (next == ACKNOWLEDGEMENT);
+                return (next == ACKNOWLEDGED);
 
-            case ACKNOWLEDGEMENT:
-                return (next == RESOLVED);
+            case ACKNOWLEDGED:
+                return (next == RESOLVED || next == CRITICAL);
 
             case RESOLVED:
                 return (next == NORMAL);

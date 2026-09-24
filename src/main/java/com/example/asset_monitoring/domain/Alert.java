@@ -23,10 +23,10 @@ public class Alert {
         this.raisedAt = Instant.now();
     }
 
-    // to increase severity
+    // to increase severity (if warning -> critical)
     public void escalate(AlertSeverity newSeverity){
         Objects.requireNonNull(newSeverity);
-        if(!this.severity.isAbove(newSeverity)) return;
+        if(!newSeverity.isAbove(this.severity)) return;
         this.severity = newSeverity;
         transitionTo(AlertState.CRITICAL);
     }
@@ -44,7 +44,7 @@ public class Alert {
         if(!isOpen()){
             throw new IllegalStateException("Cannot acknowledge resolved alert");
         }
-        transitionTo(AlertState.ACKNOWLEDGEMENT);
+        transitionTo(AlertState.ACKNOWLEDGED);
         ackAt = Instant.now();
     }
 
@@ -77,14 +77,16 @@ public class Alert {
     public boolean equals(Object o){
         if (this==o) return true;
         if(!(o instanceof Alert other)) return false;
-        return id.equals(other.id);
+        return id!=null && id.equals(other.id);
     }
 
     @Override
-    public int hashCode(){return id.hashCode();}
+    public int hashCode(){
+        return id == null ? 0 : id.hashCode();
+    }
 
     @Override
     public String toString(){
-        return "Alert{id: %s, state: %s, severity: %s, sensor: %s, raisedAt: %s".formatted(id, state, severity, sensor, raisedAt);
+        return "Alert{id: %s, state: %s, severity: %s, sensor: %s, raisedAt: %s}".formatted(id, state, severity, sensor, raisedAt);
     }
 }

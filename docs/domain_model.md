@@ -93,7 +93,7 @@ classDiagram
         NORMAL
         WARNING
         CRITICAL
-        ACKNOWLEDGEMENT
+        ACKNOWLEDGED
         RESOLVED
         +isValidTransition(AlertState) boolean
     }
@@ -125,12 +125,12 @@ stateDiagram-v2
     NORMAL --> CRITICAL
 
     WARNING --> CRITICAL : escalate
-    WARNING --> ACKNOWLEDGEMENT : acknowledge
+    WARNING --> ACKNOWLEDGED : acknowledge
     WARNING --> NORMAL
 
-    CRITICAL --> ACKNOWLEDGEMENT : acknowledge
+    CRITICAL --> ACKNOWLEDGED : acknowledge
 
-    ACKNOWLEDGEMENT --> RESOLVED : resolve
+    ACKNOWLEDGED --> RESOLVED : resolve
 
     RESOLVED --> NORMAL
 ```

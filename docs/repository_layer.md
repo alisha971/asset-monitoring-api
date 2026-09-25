@@ -21,7 +21,7 @@ InMemoryAssetRepository
 ConcurrentHashMap
 ````
 
-The same pattern is used for sensors and measurements.
+The same pattern is used for sensors, measurements, and alerts.
 
 ## Repository Interfaces
 
@@ -59,6 +59,20 @@ Provides operations for:
 * Finding measurements above a threshold
 * Finding the latest measurement for a sensor
 
+### AlertRepository
+
+Provides operations for:
+
+* Saving an alert
+* Finding an alert by ID
+* Finding alerts by sensor
+* Finding alerts by sensor and state
+
+`AlertService` finds the open alert for a sensor (if any) by fetching all
+alerts for that sensor and filtering for `Alert.isOpen()`, rather than a
+dedicated "find open alert" query — kept simple since a sensor typically has
+very few alerts.
+
 ## In-Memory Implementation
 
 The current implementation stores data in memory using `ConcurrentHashMap`.
@@ -81,6 +95,13 @@ MeasurementRepository
     └── InMemoryMeasurementRepository
             ├── Map<Long, Measurement>
             └── Map<Long, List<Measurement>>
+                └── sensor ID index
+
+AlertRepository
+    |
+    └── InMemoryAlertRepository
+            ├── Map<Long, Alert>
+            └── Map<Long, List<Alert>>
                 └── sensor ID index
 ```
 
